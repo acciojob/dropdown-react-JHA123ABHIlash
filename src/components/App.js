@@ -152,6 +152,7 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 	function handleStateChange(e){
 		const value=e.target.value;
 		const foundValue=states.find((s)=>s.name===value)
+		console.log(foundValue);
 		setState(foundValue);
 		setCity(foundValue.city);
 		setLandmarks(foundValue.city[0].landmarks);
@@ -198,7 +199,7 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 		<div>
 			<div id="state-title">
 				<div id="state-name">{state?.name}</div>
-			<div id="#state-description">{state?.description}</div>
+			<div id="state-description">{state?.description}</div>
 			</div>
 			<div id="city-title">
 				<div id="city-name">{city?.name}</div>
