@@ -196,12 +196,18 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 		</select>
 
 		<div>
-			<div id="#state-name">{state?.name}</div>
+			<div id="state-title">
+				<div id="state-name">{state?.name}</div>
 			<div id="#state-description">{state?.description}</div>
-			<div id="city-name">{city?.name}</div>
+			</div>
+			<div id="city-title">
+				<div id="city-name">{city?.name}</div>
 			<div id="city-description">{city?.description}</div>
-			<div id="landmark-name">{data?.name}</div>
+			</div>
+			<div id="landmak-title">
+				<div id="landmark-name">{data?.name}</div>
 			<div id="landmark-description">{data?.description}</div>
+			</div>
 		</div>
 	</div>
 	);
