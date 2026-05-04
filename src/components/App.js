@@ -142,7 +142,7 @@ const states = [{
 function App() 
 {
 	// Do not alter/remove main div
-	const [selectedState, setState] = useState(states[0]);
+	const [state, setState] = useState(states[0]);
 const [city, setCity] = useState(states[0].city);
 const [landmarks, setLandmarks] = useState(states[0].city[0].landmarks);
 const [data, setData] = useState(states[0].city[0].landmarks[0]);
@@ -176,7 +176,7 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 
 	return (
 	<div id="main">
-		<select id="state" value={selectedState?.name} onChange={handleStateChange}>
+		<select id="state" value={state?.name} onChange={handleStateChange}>
 			{
 				states.map((el,idx)=>(
 					<option key={idx} value={el.name}>{el.name}</option>
@@ -196,8 +196,12 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 		</select>
 
 		<div>
-			<p id="#state-name">{data.name}</p>
-			<p id="#state-description">{data.description}</p>
+			<div id="#state-name">{state?.name}</div>
+			<div id="#state-description">{state?.description}</div>
+			<div id="city-name">{city?.name}</div>
+			<div id="city-description">{city?.description}</div>
+			<div id="landmark-name">{data?.name}</div>
+			<div id="landmark-description">{data?.description}</div>
 		</div>
 	</div>
 	);
