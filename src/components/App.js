@@ -196,8 +196,8 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 		</select>
 
 		<div>
-			<p>{data.name}</p>
-			<p>{data.description}</p>
+			<p id="#state-name">{data.name}</p>
+			<p id="#state-description">{data.description}</p>
 		</div>
 	</div>
 	);
