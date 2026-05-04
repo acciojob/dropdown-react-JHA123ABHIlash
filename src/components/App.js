@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const states = [{
-	name : "Madhya Pradesh",
-	description:"'Madhya Pradesh",
+	name : "'Madhya Pradesh",
+	description:"Madhya PradeshMadhya Pradesh, a large state in central India, retains landmarks from eras throughout Indian history.",
 	city :[{
 		name : "Indore",
 		description:"Indore is a city in west-central India. It’s known for the 7-story Rajwada Palace and the Lal Baag Palace, which date back to Indore’s 19th-century Holkar dynasty.",
