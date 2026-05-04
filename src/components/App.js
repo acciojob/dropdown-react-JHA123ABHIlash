@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const states = [{
-	name : "'Madhya Pradesh",
+	name : "Madhya Pradesh",
 	description:"Madhya PradeshMadhya Pradesh, a large state in central India, retains landmarks from eras throughout Indian history.",
 	city :[{
 		name : "Indore",
