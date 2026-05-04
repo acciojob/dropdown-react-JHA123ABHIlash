@@ -1,5 +1,6 @@
 import React, { useState,useReducer } from "react";
 import "./../styles/App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const states = [{
@@ -141,9 +142,63 @@ const states = [{
 function App() 
 {
 	// Do not alter/remove main div
+	const [selectedState, setState] = useState(states[0]);
+const [city, setCity] = useState(states[0].city);
+const [landmarks, setLandmarks] = useState(states[0].city[0].landmarks);
+const [data, setData] = useState(states[0].city[0].landmarks[0]);
+
+
+
+	function handleStateChange(e){
+		const value=e.target.value;
+		const foundValue=states.find((s)=>s.name===value)
+		setState(foundValue);
+		setCity(foundValue.city);
+		setLandmarks(foundValue.city[0].landmarks);
+		setData(foundValue.city[0].landmarks[0]);
+	}
+
+	function handleCityChange(e){
+		const value=e.target.value;
+		const foundCities=city.find((s)=>s.name===value)
+		
+		setLandmarks(foundCities.landmarks);
+		setData(foundCities.landmarks[0]);
+	}
+
+	function handleLandmarksChange(e){
+		const value=e.target.value;
+		const foundLandmarks=landmarks.find((s)=>s.name===value)
+		
+		setData(foundLandmarks);
+	}
+		// console.log("data is:",data);
+
 	return (
 	<div id="main">
-		
+		<select id="state" value={selectedState?.name} onChange={handleStateChange}>
+			{
+				states.map((el,idx)=>(
+					<option key={idx} value={el.name}>{el.name}</option>
+				))
+			}
+			
+		</select>
+		<select id="city" value={city[0].name} onChange={handleCityChange}>
+			{city.map((el,idx)=>(
+			<option key={idx} value={el.name}>{el.name}</option>
+		))}
+		</select>
+		<select id="landmark" value={data.name} onChange={handleLandmarksChange}>
+			{landmarks.map((el,idx)=>(
+			<option key={idx} value={el.name}>{el.name}</option>
+		))}
+		</select>
+
+		<div>
+			<p>{data.name}</p>
+			<p>{data.description}</p>
+		</div>
 	</div>
 	);
 }
