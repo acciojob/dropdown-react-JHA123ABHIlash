@@ -185,7 +185,7 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 			}
 			
 		</select>
-		<select id="city" name="city" value={city[0].name} onChange={handleCityChange}>
+		<select id="city" name="city" value={city.name} onChange={handleCityChange}>
 			{city.map((el,idx)=>(
 			<option key={idx} value={el.name} id={`city`+idx}>{el.name}</option>
 		))}
