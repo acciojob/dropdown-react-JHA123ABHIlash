@@ -177,22 +177,22 @@ const [data, setData] = useState(states[0].city[0].landmarks[0]);
 
 	return (
 	<div id="main">
-		<select id="state" value={state?.name} onChange={handleStateChange}>
+		<select id="state" name="state" value={state?.name} onChange={handleStateChange}>
 			{
 				states.map((el,idx)=>(
-					<option key={idx} value={el.name}>{el.name}</option>
+					<option key={idx} value={el.name} id={`state`+idx}>{el.name}</option>
 				))
 			}
 			
 		</select>
-		<select id="city" value={city[0].name} onChange={handleCityChange}>
+		<select id="city" name="city" value={city[0].name} onChange={handleCityChange}>
 			{city.map((el,idx)=>(
-			<option key={idx} value={el.name}>{el.name}</option>
+			<option key={idx} value={el.name} id={`city`+idx}>{el.name}</option>
 		))}
 		</select>
-		<select id="landmark" value={data.name} onChange={handleLandmarksChange}>
+		<select id="landmark" name="landmark" value={data.name} onChange={handleLandmarksChange}>
 			{landmarks.map((el,idx)=>(
-			<option key={idx} value={el.name}>{el.name}</option>
+			<option key={idx} value={el.name} id={`landmark`+idx}>{el.name}</option>
 		))}
 		</select>
 
