@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useReducer } from "react";
 import "./../styles/App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const states = [{
 	name : "Madhya Pradesh",
 	description:"Madhya Pradesh, a large state in central India, retains landmarks from eras throughout Indian history.",
 	city :[{
 		name : "Indore",
-		description:"Indore is a city in west-central India. It’s known for the 7-story Rajwada Palace and the Lal Baag Palace, which date back to Indore’s 19th-century Holkar dynasty.",
+		description:"Indore is a city in west-central India. It's known for the 7-story Rajwada Palace and the Lal Baag Palace, which date back to Indore's 19th-century Holkar dynasty.",
 		landmarks :[{
 			name : "Mhow",
 			description:"Dr. Ambedkar Nagar, commonly known as Mhow, is a cantonment in the Indore district in Madhya Pradesh state of India. It is located 23 kilometres south-west of Indore city, towards Mumbai on the old Mumbai-Agra Road.",				
@@ -17,7 +17,7 @@ const states = [{
 		}]
 	},{
 		name : "Bhopal",
-		description:"DBhopal is a city in the central Indian state of Madhya Pradesh. It's one of India’s greenest city. There are two main lakes, the Upper Lake and the Lower Lake.",
+		description:"DBhopal is a city in the central Indian state of Madhya Pradesh. It's one of India's greenest city. There are two main lakes, the Upper Lake and the Lower Lake.",
 		landmarks :[{
 			name : "MANIT",
 			description:"Maulana Azad National Institute of Technology Bhopal is a public technical university located in Bhopal, Madhya Pradesh, India. It is part of a group of publicly funded institutions in India known as National Institutes of Technology. ",
@@ -72,7 +72,7 @@ const states = [{
 	description:"Assam is a state in northeastern India known for its wildlife, archeological sites and tea plantations. ",
 	city :[{
 		name : "Guwhati",
-		description:"Guwahati is a sprawling city beside the Brahmaputra River in the northeast Indian state of Assam. It’s known for holy sites like the hilltop Kamakhya Temple,",
+		description:"Guwahati is a sprawling city beside the Brahmaputra River in the northeast Indian state of Assam. It's known for holy sites like the hilltop Kamakhya Temple,",
 		landmarks :[{
 			name : "Ganesh Guri",
 			description:"Famous because of PVR city center.",
@@ -116,7 +116,7 @@ const states = [{
 		}]
 	},{
 		name : "Gaya",
-		description:"Gaya is a holy city beside the Falgu River, in the northeast Indian state of Bihar. It’s known for 18th-century Vishnupad Mandir, a riverside temple with an octagonal shrine. Close by, ancient Mangla Gauri Temple is set on a hilltop. ",
+		description:"Gaya is a holy city beside the Falgu River, in the northeast Indian state of Bihar. It's known for 18th-century Vishnupad Mandir, a riverside temple with an octagonal shrine. Close by, ancient Mangla Gauri Temple is set on a hilltop. ",
 		landmarks :[{
 			name : "Bakraur",
 			description:"Bakraur, sometimes called Bakrour, is a village located slightly east of Bodh Gaya in the state of Bihar, India. It lies directly across the Phalgu River from the landmark of Bodh Gaya, where Gautama Buddha is said to have attained enlightenment.",
@@ -139,111 +139,79 @@ const states = [{
 
 
 function App() {
-  // ✅ SAFE INITIALIZATION
-  const [state, setState] = useState(states?.[0] || {});
-  const [city, setCity] = useState(states?.[0]?.city?.[0] || {});
-  const [landmarks, setLandmarks] = useState(
-    states?.[0]?.city?.[0]?.landmarks || []
-  );
-  const [data, setData] = useState(
-    states?.[0]?.city?.[0]?.landmarks?.[0] || {}
-  );
+    // State hooks to track the selected index for each dropdown.
+    // Initialized to 0 to auto-select the first item by default.
+    const [stateIndex, setStateIndex] = useState(0);
+    const [cityIndex, setCityIndex] = useState(0);
+    const [landmarkIndex, setLandmarkIndex] = useState(0);
 
-  // ✅ STATE CHANGE
-  function handleStateChange(e) {
-    const value = e.target.value;
-    const foundState = states.find((s) => s.name === value);
+    // Derived values based on the current selections
+    const selectedState = states[stateIndex];
+    const selectedCity = selectedState.city[cityIndex];
+    const selectedLandmark = selectedCity.landmarks[landmarkIndex];
 
-    if (!foundState) return; // 🔒 safety
+    // Event handlers for dropdown changes
+    const handleStateChange = (e) => {
+        setStateIndex(Number(e.target.value));
+        setCityIndex(0);      // Reset City to the first option
+        setLandmarkIndex(0);  // Reset Landmark to the first option
+    };
 
-    setState(foundState);
-    setCity(foundState.city?.[0] || {});
-    setLandmarks(foundState.city?.[0]?.landmarks || []);
-    setData(foundState.city?.[0]?.landmarks?.[0] || {});
-  }
+    const handleCityChange = (e) => {
+        setCityIndex(Number(e.target.value));
+        setLandmarkIndex(0);  // Reset Landmark to the first option
+    };
 
-  // ✅ CITY CHANGE
-  function handleCityChange(e) {
-    const value = e.target.value;
-    const foundCity = state?.city?.find((c) => c.name === value);
+    const handleLandmarkChange = (e) => {
+        setLandmarkIndex(Number(e.target.value));
+    };
 
-    if (!foundCity) return; // 🔒 safety
+    // Do not alter/remove main div
+    return (
+        <div id="main">
+            <h2>Location Selector</h2>
+            
+            <div className="dropdowns-container">
+                <select id="state" value={stateIndex} onChange={handleStateChange}>
+                    {states.map((state, index) => (
+                        <option key={index} value={index}>{state.name}</option>
+                    ))}
+                </select>
 
-    setCity(foundCity);
-    setLandmarks(foundCity.landmarks || []);
-    setData(foundCity.landmarks?.[0] || {});
-  }
+                <select id="city" value={cityIndex} onChange={handleCityChange}>
+                    {selectedState.city.map((city, index) => (
+                        <option key={index} value={index}>{city.name}</option>
+                    ))}
+                </select>
 
-  // ✅ LANDMARK CHANGE
-  function handleLandmarksChange(e) {
-    const value = e.target.value;
-    const foundLandmark = landmarks?.find((l) => l.name === value);
+                <select id="landmark" value={landmarkIndex} onChange={handleLandmarkChange}>
+                    {selectedCity.landmarks.map((landmark, index) => (
+                        <option key={index} value={index}>{landmark.name}</option>
+                    ))}
+                </select>
+            </div>
 
-    if (!foundLandmark) return; // 🔒 safety
+            <div className="details-container">
+                <div className="detail-section">
+                    <h3>State Info</h3>
+                    <div id="state-title">{selectedState.name}</div>
+                    <div id="state-description">{selectedState.description}</div>
+                </div>
 
-    setData(foundLandmark);
-  }
+                <div className="detail-section">
+                    <h3>City Info</h3>
+                    <div id="city-title">{selectedCity.name}</div>
+                    <div id="city-description">{selectedCity.description}</div>
+                </div>
 
-  return (
-    <div id="main">
-      {/* STATE DROPDOWN */}
-      <select
-        id="state"
-        value={state?.name || ""}
-        onChange={handleStateChange}
-      >
-        {states.map((el, idx) => (
-          <option key={idx} value={el.name}>
-            {el.name}
-          </option>
-        ))}
-      </select>
-
-      {/* CITY DROPDOWN */}
-      <select
-        id="city"
-        value={city?.name || ""}
-        onChange={handleCityChange}
-      >
-        {(state?.city || []).map((el, idx) => (
-          <option key={idx} value={el.name}>
-            {el.name}
-          </option>
-        ))}
-      </select>
-
-      {/* LANDMARK DROPDOWN */}
-      <select
-        id="landmark"
-        value={data?.name || ""}
-        onChange={handleLandmarksChange}
-      >
-        {(landmarks || []).map((el, idx) => (
-          <option key={idx} value={el.name}>
-            {el.name}
-          </option>
-        ))}
-      </select>
-
-      {/* DISPLAY */}
-      <div>
-        <div id="state-title">
-          <div id="state-name">{state?.name}</div>
-          <div id="state-description">{state?.description}</div>
+                <div className="detail-section">
+                    <h3>Landmark Info</h3>
+                    <div id="landmark-title">{selectedLandmark.name}</div>
+                    <div id="landmark-description">{selectedLandmark.description}</div>
+                </div>
+            </div>
         </div>
-
-        <div id="city-title">
-          <div id="city-name">{city?.name}</div>
-          <div id="city-description">{city?.description}</div>
-        </div>
-
-        <div id="landmark-title">
-          <div id="landmark-name">{data?.name}</div>
-          <div id="landmark-description">{data?.description}</div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default App;
